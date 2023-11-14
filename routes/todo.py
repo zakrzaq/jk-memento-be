@@ -22,7 +22,7 @@ async def get_todos_by_user_id(user_id: int, db: Session = Depends(get_db)):
     return crud.get_active_todos_by_user_id(db, user_id)
 
 
-@router.post("/", response_model=schema.Todo)
+@router.post("/", response_model=schema.Todo, status_code=201)
 async def create_todo(
     todo: schema.TodoCreate, user_id: int, db: Session = Depends(get_db)
 ):
