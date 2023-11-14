@@ -1,4 +1,4 @@
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String
+from sqlalchemy import Boolean, Column, Integer, String
 from sqlalchemy.orm import relationship
 
 from services.database import Base
@@ -11,4 +11,7 @@ class User(Base):
     last_name = Column(String)
     email = Column(String, unique=True, index=True)
     password = Column(String)
+    is_active = Column(Boolean, default=True)
+
+    todos = relationship("Todo", back_populates="owner")
 

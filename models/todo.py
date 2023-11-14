@@ -7,6 +7,7 @@ class Todo(Base):
     __tablename__ = "todos"
 
     id = Column(Integer, primary_key=True, index=True)
+    owner_id = Column(Integer, ForeignKey("users.id"), nullable=False)
     parent_id = Column(Integer, default=None)
     title = Column(String)
     description = Column(String)
@@ -14,3 +15,5 @@ class Todo(Base):
     # labels = Column()
     completed = Column(Boolean, default=False)
     is_active = Column(Boolean, default=True)
+
+    owner = relationship("User", back_populates="todos")
