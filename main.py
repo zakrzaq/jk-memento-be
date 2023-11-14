@@ -1,16 +1,18 @@
 from fastapi import FastAPI
+from utils.init_models import init_models
+from routes import todo
+
+init_models()
 
 app = FastAPI()
 
 
 @app.get("/")
 async def root():
-    return {"message": "Hello World"}
+    return {"message": "Memento API", "version": "0.1"}
 
 
-@app.get("/items/{item_id}")
-async def get_item(item_id: int):
-    return {"item_id": item_id}
+app.include_router(todo.router, prefix="/todo")
 
 
 if __name__ == "__main__":
