@@ -19,4 +19,3 @@ class Todo(TodoBase):
 
     class Config:
         from_attributes = True
-

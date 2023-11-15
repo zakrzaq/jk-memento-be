@@ -4,23 +4,22 @@ from sqlalchemy.orm import Session
 from utils.dependencies import get_db
 from schemas import user as schema
 from crud import user as crud
+from utils.responses import no_result, NoResult
 
 router = APIRouter()
 
 
-@router.get("/{user_id}", response_model=schema.User)
+@router.get("/{user_id}", response_model=schema.User | NoResult)
 async def get_user_by_id(user_id: int, db: Session = Depends(get_db)):
-    return crud.get_user(db, user_id)
+    return crud.get_user(db, user_id) or no_result
 
 
-@router.get("/{email}", response_model=schema.User)
-async def get_user_by_email(email: str, db: Session = Depends(get_db)):
-    return crud.get_user_by_email(db, email)
-
-
-@router.get("/", response_model=list[schema.User])
-async def get_users(db: Session = Depends(get_db)):
-    return crud.get_users(db)
+@router.get("/", response_model=schema.User | list[schema.User] | NoResult)
+async def get_user_by_email(email: str | None = None, db: Session = Depends(get_db)):
+    if email:
+        return crud.get_user_by_email(db, email) or no_result
+    else:
+        return crud.get_users(db) or no_result
 
 
 @router.post("/", response_model=schema.User, status_code=201)

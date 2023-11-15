@@ -3,6 +3,7 @@ from sqlalchemy.orm import relationship
 
 from services.database import Base
 
+
 class User(Base):
     __tablename__ = "users"
 
@@ -14,4 +15,3 @@ class User(Base):
     is_active = Column(Boolean, default=True)
 
     todos = relationship("Todo", back_populates="owner")
-
