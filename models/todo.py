@@ -1,20 +1,18 @@
-from sqlalchemy import Boolean, Column, ForeignKey, Integer, String
-from sqlalchemy.orm import relationship
-
+from sqlalchemy import ForeignKey
+from sqlalchemy.orm import Mapped, mapped_column
 from services.database import Base
 
 
 class Todo(Base):
     __tablename__ = "todos"
 
-    id = Column(Integer, primary_key=True, index=True)
-    owner_id = Column(Integer, ForeignKey("users.id"), nullable=False)
-    parent_id = Column(Integer, default=None)
-    title = Column(String)
-    description = Column(String)
-    priority = Column(Integer, default=0)
-    # labels = Column()
-    completed = Column(Boolean, default=False)
-    is_active = Column(Boolean, default=True)
+    id: Mapped[int] = mapped_column(primary_key=True, index=True)
+    owner_id: Mapped[int] = mapped_column(ForeignKey("users.id"), nullable=False)
+    parent_id: Mapped[int] = mapped_column(default=None)
+    title: Mapped[str] = mapped_column()
+    description: Mapped[str] = mapped_column()
+    priority: Mapped[int] = mapped_column(default=0)
+    completed: Mapped[bool] = mapped_column(default=False)
+    is_active: Mapped[bool] = mapped_column(default=True)
 
-    owner = relationship("User", back_populates="todos")
+    # owner = relationship("User", back_populates="todos")

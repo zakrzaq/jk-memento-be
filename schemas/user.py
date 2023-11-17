@@ -14,7 +14,6 @@ class UserCreate(UserBase):
 
 class User(UserBase):
     id: int
-    todos: list[Todo]
     is_active: bool
 
     class Config:

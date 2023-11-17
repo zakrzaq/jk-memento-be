@@ -16,6 +16,8 @@ class TodoCreate(TodoBase):
 class Todo(TodoBase):
     id: int
     owner_id: int
+    completed: bool
+    is_active: bool
 
     class Config:
         from_attributes = True

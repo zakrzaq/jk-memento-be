@@ -1,4 +1,5 @@
 from sqlalchemy.orm import Session
+import json
 
 from models.todo import Todo
 from schemas.todo import TodoCreate
@@ -16,8 +17,9 @@ def get_active_todos_by_user_id(db: Session, user_id: int):
     return db.query(Todo).filter(Todo.owner_id == user_id).filter(Todo.is_active).all()
 
 
-def create_todo(db: Session, todo: TodoCreate, user_id: int):
-    db_todo = Todo(**todo.dict(), owner_id=user_id)
+def create_todo(db: Session, todo: TodoCreate | str, user_id: int):
+    todo_dict = todo.model_dump() if isinstance(todo, TodoCreate) else json.loads(todo)
+    db_todo = Todo(**todo_dict, owner_id=user_id)
     db.add(db_todo)
     db.commit()
     db.refresh(db_todo)
